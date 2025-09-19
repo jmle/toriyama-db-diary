@@ -107,6 +107,42 @@
             background-color: #e55a2b;
             transform: translateY(-2px);
         }
+
+        .translation-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+            padding: 12px 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .translation-toggle:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .translation-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ff6b35;
+            cursor: pointer;
+        }
+
+        .translation-toggle label {
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+        }
         
         @media (max-width: 768px) {
             body {
@@ -9498,6 +9534,11 @@
 
     </div>
     
+    <div class="translation-toggle">
+        <input type="checkbox" id="toggleTranslations" checked>
+        <label for="toggleTranslations">Hide English Translations</label>
+    </div>
+    
     <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
         ↑
     </button>
@@ -9515,6 +9556,39 @@
         
         // Initially hide the button
         document.querySelector('.back-to-top').style.display = 'none';
+        
+        // Translation toggle functionality
+        function toggleTranslations() {
+            const checkbox = document.getElementById('toggleTranslations');
+            const label = document.querySelector('label[for="toggleTranslations"]');
+            
+            // Find all English translation divs (second div after hr in each wj_toriyama)
+            const wjToriyamaElements = document.querySelectorAll('.wj_toriyama');
+            
+            wjToriyamaElements.forEach(function(element) {
+                const divs = element.querySelectorAll('div');
+                if (divs.length >= 2) {
+                    // The English translation is typically the second div (after the hr)
+                    const englishDiv = divs[1];
+                    if (checkbox.checked) {
+                        englishDiv.style.display = 'block';
+                        label.textContent = 'Hide English Translations';
+                    } else {
+                        englishDiv.style.display = 'none';
+                        label.textContent = 'Show English Translations';
+                    }
+                }
+            });
+        }
+        
+        // Add event listener to the checkbox
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.getElementById('toggleTranslations');
+            checkbox.addEventListener('change', toggleTranslations);
+            
+            // Set initial state
+            toggleTranslations();
+        });
     </script>
 </body>
 </html>
